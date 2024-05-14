@@ -1,8 +1,14 @@
-mod translate;
-mod excel;
+mod repo;
 mod config;
+mod utils;
+mod model;
 
-fn main() {
-    let ranslate = translate::Translater::new("20240512002049649".to_string(), "ngtYesfKB7z7nJZ92oP_".to_string());
-    
+#[tokio::main]
+async fn main() {
+    let cfg = config::Config::init();
+    let translater = repo::Translater::new(cfg.translate_app);
+    match translater.translate("hello world").await {
+        Ok(res) => println!("result: {:?}", res.trans_result),
+        Err(err) => println!("err: {}", err)
+    }
 }

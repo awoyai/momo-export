@@ -1,2 +1,13 @@
-app_id = 20240512002049649
+[db]
+link = "./data/maimemo.v3.db"
+[translate_app]
+platform = "baidu"
+app_id = "20240512002049649"
 app_secret = "ngtYesfKB7z7nJZ92oP_"
+[log]
+dir = "data/log"
+file = "app_log"
+# 允许操作日志
+enable_oper_log = true
+# 日志级别
+log_level = "DEBUG" #  TRACE DEBUG  INFO  WARN ERROR
