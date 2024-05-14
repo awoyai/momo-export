@@ -7,5 +7,6 @@ edition = "2021"
 
 [dependencies]
 rand = "0.8.5"
-reqwest = "0.12.4"
+reqwest = {version = "0.12.4", features = ["json"]}
+rust-crypto = "0.2.36"
 serde = { version = "1.0.0", features = ["derive"] }

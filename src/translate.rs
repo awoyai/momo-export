@@ -1,7 +1,7 @@
+use crypto::{digest::Digest, md5::Md5};
 use rand::Rng;
 use reqwest::Result;
 use serde::{Deserialize, Serialize};
-use std::collections::HashMap;
 
 pub struct Translater {
     cli: reqwest::Client,
@@ -9,14 +9,14 @@ pub struct Translater {
     app_secret: String,
 }
 
-#[derive(Clone, Deserialize, Serialize)]
+#[derive(Clone, Debug, Deserialize, Serialize)]
 struct TranslateResp {
     from: String,
     to: String,
     trans_result: Vec<TransResult>,
 }
 
-#[derive(Clone, Deserialize, Serialize)]
+#[derive(Clone, Debug, Deserialize, Serialize)]
 struct TransResult {
     src: String,
     dst: String,
@@ -32,23 +32,23 @@ impl Translater {
         }
     }
 
-    pub async fn translate(&self, text: &str) -> Result<String> {
+    pub async fn translate(&self, text: &str) -> Result<TranslateResp> {
         let (salt, sign) = self.generate_authorization(text);
-        let mut data = HashMap::new();
-        data.insert("q", text);
-        data.insert("from", "en");
-        data.insert("to", "zh");
-        data.insert("appid", &self.app_id);
-        data.insert("salt", &salt);
-        data.insert("sign", &sign);
+        let resp = self
+            .cli
+            .get(format!("http://api.fanyi.baidu.com/api/trans/vip/translate?q={}&from={}&to={}&appid={}&salt={}&sign={}", text, "en", "zh", self.app_id, salt, sign))
+            .send()
+            .await?;
 
-        Ok(String::new())
+        Ok(resp.json().await?)
     }
 
     fn generate_authorization(&self, text: &str) -> (String, String) {
         let mut rng = rand::thread_rng();
         let salt = rng.gen::<u8>();
-        let signStr = format!("{}{}{}{}", self.app_id, text, salt, self.app_secret);
-        (salt.to_string(), String::new())
+        let sign_str = format!("{}{}{}{}", self.app_id, text, salt, self.app_secret);
+        let mut hasher = Md5::new();
+        hasher.input_str(&sign_str);
+        (salt.to_string(), hasher.result_str())
     }
 }
