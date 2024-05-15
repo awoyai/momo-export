@@ -8,7 +8,7 @@ pub struct Vocabulary {
 }
 
 impl Vocabulary {
-    pub fn into_slice(self) -> Vec<String> {
-        vec![self.title, self.spelling, self.phonetic_uk]
+    pub fn into_slice(&self) -> Vec<String> {
+        vec![self.title.clone(), self.spelling.clone(), self.phonetic_uk.clone()]
     }
 }

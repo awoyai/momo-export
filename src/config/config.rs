@@ -26,7 +26,7 @@ pub struct TranslateAPP {
 
 #[derive(Debug, Clone, Deserialize, Serialize)]
 pub struct DB {
-    pub link: String,
+    pub file_name: String,
 }
 
 #[derive(Debug, Clone, Deserialize, Serialize)]
