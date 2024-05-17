@@ -15,6 +15,7 @@ pub struct Config {
     pub db: DB,
     pub translate_app: TranslateAPP,
     pub log: Log,
+    pub book_list: Vec<String>,
 }
 
 #[derive(Debug, Clone, Deserialize, Serialize)]

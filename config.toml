@@ -1,5 +1,5 @@
 [db]
-file_name = "./data/maimemo.db"
+file_name = "./data/maimemo.v3.db"
 [translate_app]
 platform = "baidu"
 app_id = "20240512002049649"
