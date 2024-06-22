@@ -11,3 +11,5 @@ file = "app_log"
 enable_oper_log = true
 # 日志级别
 log_level = "DEBUG" #  TRACE DEBUG  INFO  WARN ERROR
+[book]
+book_list = ["译林版高中英语必修第一册"]

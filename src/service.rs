@@ -8,7 +8,7 @@ pub async fn trasnlate(cfg: Config) {
         panic!("err: {}", err)
     }
     let translater = repo::Translater::new(cfg.translate_app);
-    for book in cfg.book_list {
+    for book in cfg.book.book_list {
         translate_book(&db, &translater, &book).await;
     }
 }

@@ -6,8 +6,7 @@ use serde::{Deserialize, Serialize};
 #[derive(Debug, Clone, Parser)]
 #[command(version, about, long_about = None)]
 struct Args {
-    #[arg(long, short, default_value = "./config.toml")]
-    conf: String,
+
 }
 
 #[derive(Debug, Deserialize, Clone, Serialize)]
@@ -15,7 +14,7 @@ pub struct Config {
     pub db: DB,
     pub translate_app: TranslateAPP,
     pub log: Log,
-    pub book_list: Vec<String>,
+    pub book: Book,
 }
 
 #[derive(Debug, Clone, Deserialize, Serialize)]
@@ -42,13 +41,18 @@ pub struct Log {
     pub enable_oper_log: bool,
 }
 
+#[derive(Debug, Clone, Deserialize, Serialize)]
+pub struct Book {
+    /// `log_level` 日志输出等级
+    pub book_list: Vec<String>,
+}
+
+
 impl Config {
-    pub fn init() -> Self {
-        let args: Args = Args::parse();
-        println!("配置文件路径{}", &args.conf);
-        let mut file = match File::open(&args.conf) {
+    pub fn init(config_path: &str) -> Self {
+        let mut file = match File::open(config_path) {
             Ok(f) => f,
-            Err(e) => panic!("不存在该文件：{}, 错误信息: {}", &args.conf, e),
+            Err(e) => panic!("不存在该文件：{}, 错误信息: {}", config_path, e),
         };
         let mut cfg_contens = String::new();
         match file.read_to_string(&mut cfg_contens) {

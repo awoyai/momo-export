@@ -11,13 +11,15 @@ use clap::Parser;
 struct Args {
     #[arg(long, short, default_value = "show")]
     action: String,
+    #[arg(long, short, default_value = "./config.toml")]
+    conf: String,
 }
 
 #[tokio::main]
 async fn main() {
-    let cfg = config::Config::init();
-    println!("config: {:?}", cfg);
     let args: Args = Args::parse();
+    let cfg = config::Config::init(&args.conf);
+    println!("config: {:?}", cfg);
     if args.action == "export" {
         service::trasnlate(cfg).await
     } else if args.action == "show" {
